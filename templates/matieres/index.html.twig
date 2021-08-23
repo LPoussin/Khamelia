@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Spécialité
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select-country/bootstrap-select-country.min.css') }} "/>
+{% endblock %}
+
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-6 col-lg-12 col-xl-6">
+			<section class="panel">
+				<header class="panel-heading">
+					<div class="panel-actions">
+						{% if 'SUPER_ADMIN' in app.user.roles %}
+							<a href="{{ path('matieres_new') }}" class="">
+								<button class="mb-xs mt-xs mr-xs btn btn-success">
+									<span class="fa fa-plus"></span>
+									Créer
+								</button>
+
+							</a>
+						{% endif %}
+						<a href="#" class="fa fa-caret-down"></a>
+					</div>
+
+					<h2 class="panel-title">
+						Liste des spécialités
+					</h2>
+
+				</header>
+				<div class="panel-body">
+					<table class="table table-bordered table-striped mb-none" {% if matieres is not empty %} id="datatable-default" {% endif %}>
+						<thead>
+							<tr>
+								<th>Code</th>
+								<th>Libelle</th>
+								<th>Slug</th>
+								<th>Etat</th>
+								<th>actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for matiere in matieres %}
+								<tr>
+									<td>{{ matiere.code }}</td>
+									<td>{{ matiere.libelle }}</td>
+									<td>{{ matiere.slug }}</td>
+									<td>{{ matiere.etat ? 'Activé' : 'Désactivé' }}</td>
+									<td>
+										<a href="{{ path('matieres_edit', {'id': matiere.id}) }}" class="mb-xs mt-xs mr-xs btn btn-primary">
+											<span class="fa fa-edit"></span>
+											Mise à jour
+										</a>
+										<a href="{{ path('all_constantes', {'id': matiere.id}) }}" class="mb-xs mt-xs mr-xs btn btn-info">
+											<span class="fa fa-link"></span>
+											Constantes
+										</a>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">Aucune spécialité</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="constantesMdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<select name="constantte" id="constantte" class="custom-select">
+							<option value="" selected>Open this select menu</option>
+						</select>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>/*$(document).ready(function () {
+		$(".lier_data").on('click', function (e) {
+		e.preventDefault()
+		var $lisnk = $(this).attr("id");
+		var $link = $(this).attr("href");
+		// var $url = $(this).attr("id");
+		axios.get($link).then(function (res) {
+		console.log(res)
+		var html_code = '';
+		res.data.constantes.forEach(element => 
+			{html_code += '<option value="'+element.id+'">'+element.libelle+'</option>'; return "cool"}
+
+		);
+		//$("select").html(html_code)
+		$('#constantesMdl').modal('show')
+
+		}).catch(function (err) {
+		console.log(err)*/
+})})})
+</script>
+<script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+<script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+<script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+<script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+<script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+<script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+<script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+<script src="{{ asset('assets/javascripts/select-country/bootstrap-select-country.min.js') }}"></script>
+<script>
+	$('.countrypicker').countrypicker();
+</script>{% endblock %}

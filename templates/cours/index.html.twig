@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Cours{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6 col-lg-12 col-xl-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="{{ path('enseigne') }}" class="">
+                            <button class="mb-xs mt-xs mr-xs btn btn-primary">
+                                Retour
+                            </button>
+                        </a>
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">
+                        Créer un cours
+                    </h2>
+                </header>
+                <div class="panel-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" name="_token" id="_token" value="{{ csrf_token('nouveau-cours') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="classe" class="col-sm-3 control-label">Classe</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="classe" id="classe" required>
+                                    {% for classe in allEnseigneClasses %}
+                                        <option value="{{ classe.id }}">{{ classe.libelle }}</option>
+                                    {% else %}
+                                        <option value="">-- Enseigne ne dispose pas de classe --</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="matiere" class="col-sm-3 control-label">Matière</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="matiere" id="matiere" required>
+                                    {% for Enseignematiere in allEnseigneMatiere %}
+                                        <option value="{{ Enseignematiere.id }}">{{ Enseignematiere.libelle }}</option>
+                                    {% else %}
+                                        <option value="">-- Aucune matière dans le système --</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_cours" class="col-sm-3 control-label">Date</label>
+                            <div class="col-sm-9">
+                                <input id="date_cours" class="form-control" name="date_cours" type="date" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="datetime_debut" class="col-sm-3 control-label">Heure début</label>
+                            <div class="col-sm-9">
+                                <input id="datetime_debut" class="form-control" name="datetime_debut" type="time" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="datetime_fin" class="col-sm-3 control-label">Heure fin</label>
+                            <div class="col-sm-9">
+                                <input id="datetime_fin" class="form-control" name="datetime_fin" type="time" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dure_cours" class="col-sm-3 control-label">Durée du cours</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="dure_cours" id="dure_cours" placeholder="Durée du cours" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="libelle" class="col-sm-3 control-label">Libelle</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="libelle" id="libelle" placeholder="Libellé" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-sm-3 control-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="description" id="description" placeholder="description" required>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="document" class="col-sm-3 control-label">Document</label>
+                            <div class="col-sm-9">
+                                <input type="file" name="document" id="document" class="form-control" accept=".pdf"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2" >
+                          <input type="submit" class="form-control btn btn-success" value="Créer">
+                        </div>
+                    </form>
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}

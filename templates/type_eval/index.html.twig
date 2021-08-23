@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Type d'évaluation{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    {{ position }}
+{% endblock %}
+
+{% block chemin %}
+    {{ chemin }}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6 col-lg-12 col-xl-6">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    {% if 'SUPER_ADMIN' in app.user.roles %}
+                        <a href="{{ path('type_eval_new') }}" class="">
+                            <button class="mb-xs mt-xs mr-xs btn btn-success">
+                                <span class="fa fa-plus"></span>
+                                Créer
+                            </button>
+                        </a>
+                    {% endif %}
+                    <a href="#" class="fa fa-caret-down"></a>
+                    
+                </div>
+        
+                <h2 class="panel-title">
+                   Liste des types d'évaluation
+                </h2>
+                
+            </header>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped mb-none" {% if type_evals is not empty %}id="datatable-default"{% endif %}>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Libelle</th>
+                            <th>Slug</th>
+                            <th>Categorie</th>
+                            <th>Description</th>
+                            <th>Actif</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for type_eval in type_evals %}
+                        <tr>
+                            <td>{{ type_eval.code }}</td>
+                            <td>{{ type_eval.libelle }}</td>
+                            <td>{{ type_eval.slug }}</td>
+                            <td>{{ type_eval.categorie.libelle }}</td>
+                            <td>{{ type_eval.isActif ? 'Yes' : 'No' }}</td>
+                            <td>{{ type_eval.description }}</td>
+                            <td>
+                                {#<a href="{{ path('categorie_eval_show', {'id': categorie_eval.id}) }}">show</a>#}
+                                <a href="{{ path('type_eval_edit', {'id': type_eval.id}) }}" 
+                                    class="mb-xs mt-xs mr-xs btn btn-primary">
+                                     <span class="fa fa-edit"></span>
+                                    edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun type d'évaluation</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}
+
+
+{# extends 'base.html.twig' %}
+
+{% block title %}TypeEval index{% endblock %}
+
+{% block body %}
+    <h1>TypeEval index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Libelle</th>
+                <th>Slug</th>
+                <th>IsActif</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_eval in type_evals %}
+            <tr>
+                <td>{{ type_eval.id }}</td>
+                <td>{{ type_eval.code }}</td>
+                <td>{{ type_eval.libelle }}</td>
+                <td>{{ type_eval.slug }}</td>
+                <td>{{ type_eval.isActif ? 'Yes' : 'No' }}</td>
+                <td>{{ type_eval.description }}</td>
+                <td>
+                    <a href="{{ path('type_eval_show', {'id': type_eval.id}) }}">show</a>
+                    <a href="{{ path('type_eval_edit', {'id': type_eval.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_eval_new') }}">Create new</a>
+{% endblock #}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Departement/nouveau{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    {{ position }}
+{% endblock %}
+
+{% block chemin %}
+    {{ chemin }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+    	<div class="col-md-6 col-lg-12 col-xl-6">
+	        <section class="panel">
+	            <header class="panel-heading">
+	            	<div class="panel-actions">
+	                    <a href="{{ path('matieres_index') }}" class="">
+	                     	<button class="mb-xs mt-xs mr-xs btn btn-primary">
+	                            <span class="fa fa-left"></span>
+	                            Retour
+	                        </button>
+	                    </a>
+	                </div>
+	                <h2 class="panel-title">
+	                   Créer un Département
+	                </h2>
+	            </header>
+            <div class="panel-body">
+    			{{ include('departement/_form.html.twig') }}
+    		</div>
+    	</section>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Timeline{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css" media="print') }} " />
+{% endblock %}
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+    <div class="timeline">
+        <div class="tm-body">
+            {% set pastMonth = '' %}
+            {% for item in allCours %}
+                {% set dat = item.dateCours|date('Y-m-d') %}
+                {% set fin = item.datetimeFin|date('H:i:m') %}
+                {% if pastMonth != item.dateCours|date('F') ~' ' ~ item.dateCours|date('Y') %}
+                    <div class="tm-title">
+                        <h3 class="h5 text-uppercase">{{ item.dateCours|date('F') }} {{ item.dateCours|date('Y') }}</h3>
+                    </div>
+                    {% set pastMonth = item.dateCours|date('F') ~' ' ~ item.dateCours|date('Y') %}
+                {% endif %}
+                <ol class="tm-items">
+                    <li>
+                        <div class="tm-info">
+                            <div class="tm-icon"><i class="fa fa-book"></i></div>
+                            <time class="tm-datetime" datetime="{{ item.dateCours|date('d-m-Y') }} {{ item.datetimeDebut|date('H') }} : {{ item.datetimeDebut|date('i') }}">
+                                <div class="tm-datetime-date">  {{ item.dateCours|date('d-m-Y') }} </div>
+                                <div class="tm-datetime-time">{{ item.datetimeDebut|date('H') }} : {{ item.datetimeDebut|date('i') }}</div>
+                            </time>
+                        </div>
+                        <div class="tm-box appear-animation" data-appear-animation="fadeInRight"data-appear-animation-delay="100">
+                            <h5 class="text-uppercase"><b>{{ item.idMatiere.libelle }} </b></h5>
+                            <p>
+                                <label class="h5 text-uppercase"> <b>Libellé du cours :</b> </label> {{ item.libelle }}
+                            </p>
+                            <p>
+                               <label class="h5 text-uppercase"> <b>Description :</b> </label> {{ item.description }}
+                            </p>
+                            <div class="tm-meta">
+                                <span>
+                                    <i class="fa fa-clock-o"></i> De <label class="text-primary">{{ item.datetimeDebut|date('H') }}:{{ item.datetimeDebut|date('i') }}</label> à <label class="text-primary">{{ item.datetimeFin|date('H') }}:{{ item.datetimeFin|date('i') }}</label>
+                                </span>
+                                <span>
+                                    <i class="fa fa-download"></i> <a href="{{ DOCUMENT_COURS }}/{{ item.document }}">{{ item.document }}</a>
+                                </span>
+                                {% if date('now')|date('Y-m-d H:i:m') > date(dat~fin)|date('Y-m-d H:i:m') and 
+                                    ('eleve' in UserDetails.profiles or 'parent' in UserDetails.profiles or 'enseignant' in UserDetails.profiles) %}                                    
+                                    <span>
+                                        <i class="fa fa-comment-o"></i>  <a href="{{ path('avis', {'cours': item.id}) }}">Avis</a>
+                                    </span>
+                                 {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+                
+            {% endfor %}
+        </div>
+    </div>
+    {#<section class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="calendar"></div>
+                </div>
+                <div class="col-md-3">
+                  
+                      <small id="helpId" class="form-text text-muted">A la fin du cours cliquez sur ce dernier dans le calendrier pour donner votre avis</small>
+                    {% if allCours is empty %}
+                        <h2 class="text-center text-danger">Aucun cours programmer</h2>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>#}
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+
+    <script src="{{ asset('assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js') }}"></script>
+    <script src="{{ asset('assets/vendor/fullcalendar/lib/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/fullcalendar/fullcalendar.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-appear/jquery.appear.js') }}"></script>
+    <script src="{{ asset('assets/vendor/gmaps/gmaps.js') }}"></script>
+    <!-- Examples -->
+
+    <script>
+        (function( $ ) {
+
+            'use strict';
+
+            var initLightbox = function() {
+                $('.timeline .thumbnail-gallery').magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    tLoading: 'Loading image #%curr%...',
+                    mainClass: 'mfp-img-mobile',
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+                    },
+                    image: {
+                        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+                    }
+                });
+            };
+
+            /*var initGoogleMaps = function() {
+                var map = new GMaps({
+                    div: '#gmap-checkin-example',
+                    lat: 40.7533405,
+                    lng: -73.982253,
+                    markers: [{
+                        lat: 40.7533405,
+                        lng: -73.982253,
+                        infoWindow: {
+                            content: '<p>New York Public Library</p>'
+                        }
+                    }],
+                    scrollwheel: false
+                });
+
+                map.addMarker({
+                    lat: 40.7533405,
+                    lng: -73.982253,
+                    infoWindow: {
+                        content: '<p>New York Public Library</p>'
+                    }
+                });
+            };*/
+
+            /*$(function() {
+                initLightbox();
+                initGoogleMaps();
+            });*/
+
+        }).apply(this, [ jQuery ]);
+    </script>
+    <!--script src="{#{ asset('assets/javascripts/pages/examples.calendar.js') }#}"></script-->
+   {# <script>
+        (function( $ ) {
+            
+            'use strict';
+
+            
+            var initCalendar = function() {
+                var $calendar = $('#calendar');
+                var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                $calendar.fullCalendar({
+                    header: {
+                        left: 'title',
+                        right: 'prev,today,next,basicDay,basicWeek,month'
+                    },
+
+                    timeFormat: 'h:mm',
+
+                    titleFormat: {
+                        month: 'MMMM YYYY',      // September 2009
+                        week: "MMM d YYYY",      // Sep 13 2009
+                        day: 'dddd, MMM d, YYYY' // Tuesday, Sep 8, 2009
+                    },
+
+                    themeButtonIcons: {
+                        prev: 'fa fa-caret-left',
+                        next: 'fa fa-caret-right',
+                    },
+                    events: [
+                        
+                        {% for item in allCours %}
+                        
+                            {
+                                title: '{{ item.libelle }}',
+                                start: new Date({{ item.dateCours|date('Y') }}, {{ item.dateCours|date('n') }}-1, {{ item.dateCours|date('j') }}, {{ item.datetimeDebut|date('G') }}, {{ item.datetimeDebut|date('I') }}),
+                                end: new Date({{ item.dateCours|date('Y') }}, {{ item.dateCours|date('n') }}-1, {{ item.dateCours|date('j') }}, {{ item.datetimeFin|date('G') }}, {{ item.datetimeFin|date('I') }})
+                                {% set dat = item.dateCours|date('Y-m-d') %}
+                                {% set fin = item.datetimeFin|date('H:i:m') %}
+                                {% if date('now')|date('Y-m-d H:i:m') > date(dat~fin)|date('Y-m-d H:i:m') and 
+                                    'eleve' in UserDetails.profiles or 'parent' in UserDetails.profiles %}
+                                ,url: '{{ path('avis_cours', {'cours': item.id}) }}'                      
+                                {% endif %}
+                            },
+                        {% endfor %}
+                       
+                    ]
+                });
+
+                // FIX INPUTS TO BOOTSTRAP VERSIONS
+                var $calendarButtons = $calendar.find('.fc-header-right > span');
+                $calendarButtons
+                    .filter('.fc-button-prev, .fc-button-today, .fc-button-next')
+                        .wrapAll('<div class="btn-group mt-sm mr-md mb-sm ml-sm"></div>')
+                        .parent()
+                        .after('<br class="hidden"/>');
+
+                $calendarButtons
+                    .not('.fc-button-prev, .fc-button-today, .fc-button-next')
+                        .wrapAll('<div class="btn-group mb-sm mt-sm"></div>');
+
+                $calendarButtons
+                    .attr({ 'class': 'btn btn-sm btn-default' });
+            };
+
+            $(function() {
+                initCalendar();
+                initCalendarDragNDrop();
+            });
+
+        }).apply(this, [ jQuery ]);
+    </script>#}
+{% endblock %}

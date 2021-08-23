@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Médécins
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} "/>
+{% endblock %}
+
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		{% set link_mdl = 'bar' %}
+		<div class="col-md-6 col-lg-12 col-xl-6">
+			<section class="panel">
+				<header class="panel-heading">
+					<div class="panel-actions">
+						{% if 'SUPER_ADMIN' in app.user.roles %}
+							<a href="{{ path('medecin_new') }}" class="">
+								<button class="mb-xs mt-xs mr-xs btn btn-success">
+									<span class="fa fa-back"></span>
+									Retour
+								</button>
+							</a>
+						{% endif %}
+						<a href="#" class="fa fa-caret-down"></a>
+
+					</div>
+
+					<h2 class="panel-title">
+						Gestion de l'enseigne
+					</h2>
+
+				</header>
+				<div class="panel-body">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<a class="nav-link active" id="produit-tab" data-toggle="tab" href="#produit" role="tab" aria-controls="produit" aria-selected="true">Produits</a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a class="nav-link" id="tiers-tab" data-toggle="tab" href="#tiers" role="tab" aria-controls="tiers" aria-selected="false">Tiers</a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a class="nav-link" id="facture-tab" data-toggle="tab" href="#facture" role="tab" aria-controls="facture" aria-selected="false">Factures</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="produit" role="tabpanel" aria-labelledby="produit-tab">...</div>
+						<div class="tab-pane fade" id="tiers" role="tabpanel" aria-labelledby="tiers-tab">...</div>
+						<div class="tab-pane fade" id="facture" role="tabpanel" aria-labelledby="facture-tab">...</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/vendor/jquery/jquery.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
+	<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('assets/vendor/nanoscroller/nanoscroller.js') }}"></script>
+	<script src="{{ asset('assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/vendor/magnific-popup/magnific-popup.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-placeholder/jquery.placeholder.js') }}"></script>
+
+	<script src="{{ asset('assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-appear/jquery.appear.js') }}"></script>
+	<script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-easypiechart/jquery.easypiechart.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot-tooltip/jquery.flot.tooltip.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.pie.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.categories.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.resize.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-sparkline/jquery.sparkline.js') }}"></script>
+	<script src="{{ asset('assets/vendor/raphael/raphael.js') }}"></script>
+	<script src="{{ asset('assets/vendor/morris/morris.js') }}"></script>
+	<script src="{{ asset('assets/vendor/gauge/gauge.js') }}"></script>
+	<script src="{{ asset('assets/vendor/snap-svg/snap.svg.js') }}"></script>
+	<script src="{{ asset('assets/vendor/liquid-meter/liquid.meter.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/jquery.vmap.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/data/jquery.vmap.sampledata.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/jquery.vmap.world.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js') }}"></script>
+	<!-- Theme Base, Components and Settings -->
+	<script src="{{ asset('assets/javascripts/theme.js') }}"></script>
+
+	<!-- Theme Custom -->
+	<script src="{{ asset('assets/javascripts/theme.custom.js') }}"></script>
+
+	<!-- Theme Initialization Files -->
+	<script src="{{ asset('assets/javascripts/theme.init.js') }}"></script>
+
+
+	<!-- Examples -->
+	<script src="{{ asset('assets/javascripts/dashboard/examples.dashboard.js') }}"></script>
+{% endblock %}

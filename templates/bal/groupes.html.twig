@@ -1,0 +1,11 @@
+{% extends 'bal/base.html.twig' %}
+
+{% block content_body %}
+	<div class="inner-body">
+		<h1>Groupes</h1>
+
+		{% for g in groupes %}
+			<h4><a href="{{path('bal_groupe_detail',{'id':g.id})}}">{{g.libelle}}</a></h4>
+		{% endfor %}
+	</div>
+{% endblock %}

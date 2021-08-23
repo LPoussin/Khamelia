@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Type d'évaluation/Edition{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    {{ position }}
+{% endblock %}
+
+{% block chemin %}
+    {{ chemin }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+    	<div class="col-md-6 col-lg-12 col-xl-6">
+	        <section class="panel">
+	            <header class="panel-heading">
+	            	<div class="panel-actions">
+	                    <a href="{{ path('type_eval_index') }}" class="">
+	                     	<button class="mb-xs mt-xs mr-xs btn btn-primary">
+	                            <span class="fa fa-left"></span>
+	                            Retour
+	                        </button>
+	                    </a>
+	                </div>
+	                <h2 class="panel-title">
+	                   Mise à jour un type d'évaluation
+	                </h2>
+	            </header>
+            <div class="panel-body">
+    			 {{ include('type_eval/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    		</div>
+    	</section>
+    </div>
+
+{% endblock %}
+{# extends 'base.html.twig' %}
+
+{% block title %}Edit TypeEval{% endblock %}
+
+{% block body %}
+    <h1>Edit TypeEval</h1>
+
+    {{ include('type_eval/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_eval_index') }}">back to list</a>
+
+    {{ include('type_eval/_delete_form.html.twig') }}
+{% endblock #}

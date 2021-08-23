@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Service{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    {{ position }}
+{% endblock %}
+
+{% block chemin %}
+    {{ chemin }}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6 col-lg-12 col-xl-6">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    {% if 'SUPER_ADMIN' in app.user.roles %}
+                        <a href="{{ path('services_new') }}" class="">
+                            <button class="mb-xs mt-xs mr-xs btn btn-success">
+                                <span class="fa fa-plus"></span>
+                                Créer
+                            </button>
+                            
+                        </a>
+                    {% endif %}
+                    <a href="#" class="fa fa-caret-down"></a>
+                    
+                </div>
+        
+                <h2 class="panel-title">
+                   Liste des services
+                </h2>
+                
+            </header>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped mb-none" {% if services is not empty %}id="datatable-default"{% endif %} >
+                    <thead>
+                        <tr>
+                            <th>Libelle</th>
+                            <th>Description</th>
+                            <th>Etat</th>
+                            <th>Type</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in services %}
+                            <tr>
+                                <td>{{ service.libelle }}</td>
+                                <td>{{ service.description }}</td>
+                                <td>{{ service.etat ? 'Activé' : 'Désactivé' }}</td>
+                                <td>{{ service.type ? 'Obligatoire' : 'Pas obligatoire' }}</td>
+                                <td>
+                                    {% if 'SUPER_ADMIN' in app.user.roles %}
+                                        <a href="#modalCenter-{{ service.id }} " class="mb-xs mt-xs mr-xs btn btn-default modal-basic">
+                                            {{ service.etat ? 'Désactivé' : 'Activé' }}
+                                        </a>
+                                        <div id="modalCenter-{{ service.id }}" class="modal-block modal-block-primary mfp-hide">
+                                            <section class="panel">
+                                                <header class="panel-heading">
+                                                    <h2 class="panel-title">Attention</h2>
+                                                </header>
+                                                <div class="panel-body text-center">
+                                                    <div class="modal-wrapper">
+                                                        <div class="modal-icon center">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </div>
+                                                        <div class="modal-text">
+                                                            <h4>Attention</h4>
+                                                            <p>Êtes-vous sur de vouloir changer l'état de cet service ?</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <footer class="panel-footer">
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-right">
+                                                            <a href="{{ path('services_active', {'id': service.id}) }}">
+                                                                <button class="btn btn-primary">Oui</button>
+                                                            </a>
+                                                            <button class="btn btn-default modal-dismiss">Non</button>
+                                                        </div>
+                                                    </div>
+                                                </footer>
+                                            </section>
+                                        </div>
+                                        <a href="{{ path('services_edit', {'id': service.id}) }}" class="mb-xs mt-xs mr-xs btn btn-primary"><span class="fa fa-edit"></span> Modifier</a>
+                                    {% else %}
+                                        {% if service.type == true %}
+                                                Déjà Membre
+                                        {% else %}
+                                            {% if joinedEnseigne %}
+                                                {% set dejaMembre = false %}
+                                                {% for item in app.user.services %}
+                                                    {% if item.id == service.id %}
+                                                        Déjà membre
+                                                        {% set dejaMembre = true %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if dejaMembre == false %}
+                                                    <a href="#modalCenterJoin-{{ service.id }}" class="mb-xs mt-xs mr-xs btn btn-primary modal-basic"><span class="fa fa-reply"></span> Rejoindre</a>
+
+                                                    <div id="modalCenterJoin-{{ service.id }}" class="modal-block modal-block-primary mfp-hide">
+                                                        <section class="panel">
+                                                            <header class="panel-heading">
+                                                                <h2 class="panel-title">Attention</h2>
+                                                            </header>
+                                                            <div class="panel-body text-center">
+                                                                <div class="modal-wrapper">
+                                                                    <div class="modal-icon center">
+                                                                        <i class="fa fa-question-circle"></i>
+                                                                    </div>
+                                                                    <div class="modal-text">
+                                                                        <h4>Attention</h4>
+                                                                        <p>Êtes-vous sur de vouloir rejoindre ce service ?</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <footer class="panel-footer">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-right">
+                                                                        <a href="{{ path('service_join', {'id': service.id}) }}">
+                                                                            <button class="btn btn-primary">Oui</button>
+                                                                        </a>
+                                                                        <button class="btn btn-default modal-dismiss">Non</button>
+                                                                    </div>
+                                                                </div>
+                                                            </footer>
+                                                        </section>
+                                                    </div>
+                                                {% endif %}
+                                            {% else %}
+                                                Rejoignez d'abord une enseigne
+                                            {% endif %}
+
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">Aucun service créé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+    
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}

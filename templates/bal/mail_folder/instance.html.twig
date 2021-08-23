@@ -1,0 +1,49 @@
+{% for d,v in discuss %}
+    <li  {% if v.etat is same as(false) and app.user.id!=v.lastMessage.expediteur.id %} class="unread" {% endif %} >
+  {% if v.type=="groupe" %}
+    <a href="{{path('bal_discussion',{'type':'groupe','id':v.groupe.id})}}">
+ {% else %}
+    <a href="{{path('bal_discussion',{'type':'user','id':v.user.id})}}">
+ {% endif %}
+        <i class="mail-label" {% if v.etat is not same as(true) %} style="border-color: #EA4C89" {% endif %}></i>
+
+        <div class="col-sender">
+                <div class="checkbox-custom checkbox-text-primary ib">
+                        <input type="checkbox" id="mail2">
+                        <label for="mail2"></label>
+                </div>
+            {% if v.type=="groupe" %}
+                <p class="m-none ib">{{ v.groupe.libelle }}</p>
+            {% else %}
+               <p class="m-none ib">{{ v.user.nom~" "~v.user.prenom }}</p> 
+            {% endif %}
+        </div>
+        <div class="col-mail">
+                <p class="m-none mail-content">
+                        <span class="subject">
+                            {% if v.lastMessage.subject is not empty and v.lastMessage.subject !=" " %}
+                            {{ v.lastMessage.subject }}
+                            {% elseif v.lastMessage.message is not null %}
+                                {{v.lastMessage.message|slice(0,20)}} ...
+                            {% else %}
+                                {{"Fichier"}}
+                            {% endif %}
+                           
+                        </span>
+                        <span class="mail-partial"></span>
+                </p>
+                <i class="mail-attachment fa fa-paperclip"></i>
+                <p class=" mail-date">
+                    {% if date(v.lastMessage.date)|date('Y/m/d')=="now"|date('Y/m/d') %}
+                        {{ v.lastMessage.date|date('H:i:s') }}
+                    {% else %}
+                        {{ v.lastMessage.date|date('m/d') }}
+                    {% endif %}
+                </p>
+        </div>
+    </a>
+</li>
+{% endfor %}
+<div id="pagination">
+{{knp_pagination_render(discuss)}}
+</div>

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NiveauxEtudes{% endblock %}
+
+{% block body %}
+    <h1>NiveauxEtudes</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ niveaux_etude.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ niveaux_etude.code }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ niveaux_etude.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ niveaux_etude.slug }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ niveaux_etude.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('niveaux_etudes_index') }}">back to list</a>
+
+    <a href="{{ path('niveaux_etudes_edit', {'id': niveaux_etude.id}) }}">edit</a>
+
+    {{ include('niveaux_etudes/_delete_form.html.twig') }}
+{% endblock %}

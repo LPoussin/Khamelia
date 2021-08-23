@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Niveau d'étude{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    {{ position }}
+{% endblock %}
+
+{% block chemin %}
+    {{ chemin }}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6 col-lg-12 col-xl-6">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    {% if 'SUPER_ADMIN' in app.user.roles %}
+                        <a href="{{ path('niveaux_etudes_new') }}" class="">
+                            <button class="mb-xs mt-xs mr-xs btn btn-success">
+                                <span class="fa fa-plus"></span>
+                                Créer
+                            </button>
+                            
+                        </a>
+                    {% endif %}
+                    <a href="#" class="fa fa-caret-down"></a>
+                    
+                </div>
+        
+                <h2 class="panel-title">
+                   Liste des niveaux d'étude
+                </h2>
+                
+            </header>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped mb-none" {% if niveaux_etudes is not empty %}id="datatable-default"{% endif %}>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Libelle</th>
+                            <th>Slug</th>
+                            <th>Etat</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for niveaux_etude in niveaux_etudes %}
+                        <tr>
+                            <td>{{ niveaux_etude.code }}</td>
+                            <td>{{ niveaux_etude.libelle }}</td>
+                            <td>{{ niveaux_etude.slug }}</td>
+                            <td>{{ niveaux_etude.etat ? 'Activé' : 'Désactivé' }}</td>
+                            <td>
+                                <a href="{{ path('niveaux_etudes_edit', {'id': niveaux_etude.id}) }}" class="mb-xs mt-xs mr-xs btn btn-primary">
+                                    <span class="fa fa-edit"></span>
+                                    Mise à jour
+                                </a>
+                               
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun niveau d'étude</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+swiftmailer:
+    spool: { type: 'memory' }
+    transport: 'gmail'
+    username: 'test.inetschools@gmail.com'
+    password: 'net2allInetschools'
+    port: 465
+    host: 'localhost'
+    encryption: 'ssl'
+    auth-mode: 'login'
+    stream_options:
+        ssl:
+            allow_self_signed: true
+            verify_peer: false
+            verify_peer_name: false

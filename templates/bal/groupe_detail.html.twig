@@ -1,0 +1,13 @@
+{% extends 'bal/base.html.twig' %}
+
+{% block content_body %}
+	<div class="inner-body">
+		<h1>Groupes : {{groupe.libelle}}</h1>
+
+		Les membres :
+		{% set mems=groupe.members %}
+		{% for m in mems %}
+			<div><a href="#profile">{{m.nom~" "~m.prenom}}</a></div>
+		{% endfor %}
+	</div>
+{% endblock %}

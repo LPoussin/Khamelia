@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Dashboard{% endblock %}
+{% block body %}
+<!-- start: page -->
+	<div class="row">
+		<div class="col-md-6 col-lg-12 col-xl-6">
+			<section class="panel">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-8">
+
+							<div class="chart-data-selector" id="salesSelectorWrapper">
+								<h2>
+									Etat:
+									<strong>
+										<select class="form-control" id="salesSelector">
+											<option value="nb_enseigne" selected>Nombre d'enseigne</option>
+											<option value="nb_enseignant" >Nombre d'enseignant</option>
+											<option value="nb_eleve" >Nombre d'élèves</option>
+											<option value="nb_parent" >Nombre de parents</option>
+										</select>
+									</strong>
+								</h2>
+
+								<div id="salesSelectorItems" class="chart-data-selector-items mt-sm">
+									<!-- Flot: nb_enseigne -->
+									<div class="chart chart-sm" data-sales-rel="nb_enseigne" id="flotDashSales1" class="chart-active"></div>
+									<script>
+
+										var flotDashSales1Data = [{
+											data: [
+												{% for key,item in allEnseigneParMois %}
+													["{{ key }}", {{item}}],
+												{% endfor %}
+												["Janv", 50],
+												["Fev", 20],
+												["Mars", 11],
+												["Avr", 17],
+												["Mai", 30],
+												["jui", 25],
+												["JuIL", 45],
+												["aout", 49],
+												["sep", 60],
+											],
+											color: "#0088cc"
+										}];
+
+										// See: assets/javascripts/dashboard/examples.dashboard.js for more settings.
+
+									</script>
+
+									
+								</div>
+
+							</div>
+						</div>
+				
+					</div>
+				</div>
+			</section>
+		</div>
+		
+	</div>
+	
+<!-- end: page -->
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-appear/jquery.appear.js') }}"></script>
+	<script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-easypiechart/jquery.easypiechart.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot-tooltip/jquery.flot.tooltip.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.pie.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.categories.js') }}"></script>
+	<script src="{{ asset('assets/vendor/flot/jquery.flot.resize.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jquery-sparkline/jquery.sparkline.js') }}"></script>
+	<script src="{{ asset('assets/vendor/raphael/raphael.js') }}"></script>
+	<script src="{{ asset('assets/vendor/morris/morris.js') }}"></script>
+	<script src="{{ asset('assets/vendor/gauge/gauge.js') }}"></script>
+	<script src="{{ asset('assets/vendor/snap-svg/snap.svg.js') }}"></script>
+	<script src="{{ asset('assets/vendor/liquid-meter/liquid.meter.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/jquery.vmap.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/data/jquery.vmap.sampledata.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/jquery.vmap.world.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js') }}"></script>
+	<script src="{{ asset('assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js') }}"></script>
+{% endblock %}

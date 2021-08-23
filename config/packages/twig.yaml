@@ -1,0 +1,13 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: null
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+      TYPE_PARTICULIER: '%TYPE_PARTICULIER%'
+      TYPE_ENTREPRISE: '%TYPE_ENTREPRISE%'
+      IMAGE_ENSEINGE_LINK: '%IMAGE_ENSEINGE_LINK%'
+      DOCUMENT_COURS: '%DOCUMENT_COURS%'
+      FILE_CHAT_DIR: '%FILE_CHAT_DIR%'
+

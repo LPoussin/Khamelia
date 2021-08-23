@@ -1,0 +1,16 @@
+{% for n in notifications %}
+  {#{% set link="#" %}
+  {% if n.type=="new_course" %}
+     {% set link=path('') %} 
+      
+  {% endif %} #}
+<li>
+  <a href="#" class="clearfix">
+    <div class="image">
+            <i class="fa fa-thumbs-down bg-danger"></i>
+    </div>
+    <span class="title">{{ n.contenu }}</span>
+    <span class="message">{{ n.createdAt|date('d/m H:i') }}</span>
+  </a>
+</li>
+{% endfor %}

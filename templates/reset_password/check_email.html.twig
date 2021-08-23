@@ -1,0 +1,13 @@
+{% extends 'reset_password/base.html.twig' %}
+
+{% block title %}Email de changement de mot de passe envoyé{% endblock %}
+{% block logo_first_path %}{{'../'}}{% endblock %}
+{% block titre_panel %} Message envoyé {% endblock %}
+{% block body_content %}
+    <p>
+        Un email contenant un lien vous a été envoyé. Le lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>Si vous n'avez pas reçu d'email, consulter votre spam ou <a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+	<br>
+	 <p class="p-3 text-center"><a href="{{ path('app_login') }}">Se connecter</a>.</p>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Constantes/Jours
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select-country/bootstrap-select-country.min.css') }} "/>
+{% endblock %}
+
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-6 col-lg-12 col-xl-6">
+			<section class="panel">
+				<header class="panel-heading">
+					<div class="panel-actions">
+						<a href="{{ path('constante_entente_add_jour',{'id_enseigne': id_enseigne, 'id_specialite': id_specialite,'id_patient': id_patient}) }}" class="">
+							<button class="mb-xs mt-xs mr-xs btn btn-success">
+								<span class="fa fa-plus"></span>
+								Créer
+							</button>
+
+						</a>
+						<a href="#" class="fa fa-caret-down"></a>
+					</div>
+
+					<h2 class="panel-title">
+						Liste des constante du jour
+					</h2>
+
+				</header>
+				<div class="panel-body">
+					<table class="table table-bordered table-striped mb-none" {% if constantesJours is not empty %} id="datatable-default" {% endif %}>
+						<thead>
+							<tr>
+								<th>Constante</th>
+								<th>Libelle</th>
+								<th>Date de creation</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for constante in constantesJours %}
+								<tr>
+									<td>
+										{% for c_spec in constantes_spec %}
+											{% if c_spec.id == constante.idConstante %}
+												{{c_spec.libelle}}
+											{% endif %}
+										{% endfor %}
+									</td>
+									<td>{{ constante.libelleCst }}</td>
+									<td>{{ constante.createdAt | format_datetime('full', 'full', locale='fr') }}</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">Aucune constante du jour</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+	<script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+	<script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+	<script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+	<script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+	<script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+	<script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+	<script src="{{ asset('assets/javascripts/select-country/bootstrap-select-country.min.js') }}"></script>
+	<script>
+		$('.countrypicker').countrypicker();
+	</script>
+{% endblock %}

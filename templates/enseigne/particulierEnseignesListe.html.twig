@@ -1,0 +1,271 @@
+{% for enseigneAffiliee in affiliées %}
+	<tr class="gradeX center">
+		<td>
+			{{ enseigneAffiliee.nomEnseigne }}
+		</td>
+		<td>
+			{{ enseigneAffiliee.codeEnseigne }}
+		</td>
+		<td
+			class="center">
+			{# Actions si le particulier connecté n'a pas encore rejoint une enseigne #}
+			{% if enseigneAffiliee.id not in joined %}
+				<a href="#modalCenter-{{ enseigneAffiliee.id }}" class="modal-basic mb-xs mt-xs mr-xs btn btn-success">
+					<span class="fa fa-reply "></span>
+					Rejoindre
+				</a>
+
+				<div id="modalCenter-{{ enseigneAffiliee.id }}" class="modal-block modal-block-primary mfp-hide">
+					<section class="panel">
+						<header class="panel-heading">
+							<h2 class="panel-title">Attention</h2>
+						</header>
+						<div class="panel-body text-center">
+							<div class="modal-wrapper">
+								<div class="modal-icon center">
+									<i class="fa fa-question-circle"></i>
+								</div>
+								<div class="modal-text">
+									<h4>Attention</h4>
+									<p>Êtes-vous sur de vouloir rejoindre cette enseigne ?</p>
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer">
+							<div class="row">
+								<div class="col-md-12 text-right">
+									<a href="{{ path('rejoindre', {'id_enseigne': enseigneAffiliee.id}) }}">
+										<button class="btn btn-primary">Oui</button>
+									</a>
+									<button class="btn btn-default modal-dismiss">Non</button>
+								</div>
+							</div>
+						</footer>
+					</section>
+				</div>
+			{% else %}
+				{# Si le particulier a rejoint l'enseigne action possible #}
+				{% set coadmin1 = false %}
+				{% set isSecretaire = false %}
+				{% set isEnseignant = false %}
+				{% set isEleve = false %}
+				{% set isInfirmier = false %}
+				{% set isParent = false %}
+				{# boucle pour connaitre le profile(s) de l'utilisateur connecté dans l'enseigne en cours #}
+				{% for enseigneJoind in enseignesJoined %}
+					{% if enseigneJoind.idUser == app.user.id and 'co_administrateur' in enseigneJoind.droits and 
+                        enseigneJoind.idEnseigne == enseigneAffiliee.id %}
+						<a href="{{ path('membre', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-info">
+							<span class="fa fa-users"></span>
+							Membres
+						</a>
+						{# Niveau d'étude 
+						                        <a href="#modalFormNiveau-{{ enseigneAffiliee.id_enseigne }}" class="mb-xs mt-xs mr-xs btn btn-success modal-with-form">
+						                            <span class="fa fa-pencil"></span>
+						                            Niveaux d'étude
+						                        </a>
+						                        <div id="modalFormNiveau-{{ enseigneAffiliee.id_enseigne }}" class="modal-block modal-block-primary mfp-hide">
+						                            <section class="panel">
+						                                <header class="panel-heading">
+						                                    <h2 class="panel-title">Ajout de type d'enseigne</h2>
+						                                </header>
+						                                <div class="panel-body">
+						                                    <form action="{{ path('ajoute_niveau') }} " method="post">
+						                                        <input type="hidden" name="_token" value="{{ csrf_token('niveau-item'~ app.user.id) }}"/>
+						                                        <input type="hidden" value="{{ enseigneAffiliee.id_enseigne }}" name="id_enseigne">
+						                                        <div class="form-group mt-lg">
+						                                            <label class="col-sm-3 control-label">Type d'enseigne</label>
+						                                            <div class="col-sm-9">
+						                                                <select class="form-control" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "enableCaseInsensitiveFiltering": true }' id="ms_example6" name="niveaux[]" required="required">
+						                                                    {% for niveauEtude in allNiveauxEtudes %}
+						                                                        {% for val in typeEnsArray[enseigneAffiliee.id_enseigne] %}
+						                                                            {% if niveauEtude.typeEnseigne.id == val.idTypeEns %}
+						                                                                <option 
+						                                                                value="{{ niveauEtude.id }}" 
+						                                                                {% if niveauxEtudes[enseigneAffiliee.id_enseigne] is not empty and niveauEtude.id in niveauxEtudes[enseigne.id_enseigne].niveaux %}
+						                                                                    selected="selected" 
+						                                                                {% endif %}
+						                                                                    >
+						                                                                    {{ niveauEtude.libelle }}
+						                                                                </option>
+						                                                            {% endif %}
+						                                                        {% endfor %}
+						                                                    {% endfor %}
+						                                                </select>
+						                                            </div>									
+						                                        </div>
+						                                        <div class="form-group text-right pr-md">
+						                                            <input type="submit" value="Ajouter / Mettre à jour" class="btn btn-primary">
+						                                        </div>
+						                                    </form>
+						                                </div>
+						                                <footer class="panel-footer">
+						                                    <div class="row">
+						                                        <div class="col-md-12 text-right">
+						                                            <button class="btn btn-default modal-dismiss">Cancel</button>
+						                                        </div>
+						                                    </div>
+						                                </footer>
+						                            </section>
+						                        </div>
+						                        <br>
+						                        <a href="{{ path('matieresEnseigne', {'id_enseigne': enseigneAffiliee.id_enseigne}) }} " class="mb-xs mt-xs mr-xs btn btn-warning">
+						                            <span class="fa fa-file"></span>
+						                            Matières
+						                        </a>	
+						                        <a href="{{ path('classe_index', {'id_enseigne': enseigneAffiliee.id_enseigne}) }} " class="mb-xs mt-xs mr-xs btn btn-default">
+						                            <span class="fa fa-cubes"></span>
+						                            Classes
+						                        </a>
+						                        <a href="{{ path('professeur', {'id_enseigne' : enseigneAffiliee.id_enseigne }) }} " class="mb-xs mt-xs mr-xs btn btn-danger">
+						                            <span class="fa fa-cubes"></span>
+						                            Professeurs
+						                        </a>#}
+						{% set coadmin1 = true %}
+					{% endif %}
+				{% endfor %}
+
+				{# Actiones possibles en fonctions du/des profile(s) de l'user connecté #}
+				{% for value in onlineUserProfiles %}
+					{% if value.IdEnseigne  == enseigneAffiliee.id %}
+						{% if 'secretaire' in value.profiles %}
+							<a href="{{ path('membre_inscription', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-info">
+								<span class="fa fa-plus"></span>
+								Inscriptions
+							</a>
+							{% set isSecretaire = true %}
+						{% elseif 'infirmier' in value.profiles %}
+							<a href="{{ path('constante_entente', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-info">
+								<span class="fa fa-plus"></span>
+								Constantes
+							</a>
+							{% set isInfirmier = true %}
+						{% elseif 'enseignant' in value.profiles %}
+							<a href="{{ path('cours', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-default">
+								<span class="fa fa-pencil"></span>
+								Cours
+							</a>
+							<a href="{{ path('evaluation_timeline', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-default">
+								<span class="fa fa-book"></span>
+								Evaluations
+							</a>
+							<a href="#modalCenterTimeline-{{ enseigneAffiliee.id }}" class="mb-xs mt-xs mr-xs btn btn-primary modal-basic">
+								<span class="fa fa-calendar"></span>
+								Programme
+							</a>
+							<div id="modalCenterTimeline-{{ enseigneAffiliee.id }}" class="modal-block modal-block-primary mfp-hide">
+								<section class="panel">
+									<header class="panel-heading">
+										<h2 class="panel-title">Choix de la classe</h2>
+									</header>
+									<div class="panel-body">
+										{% if allClassesByEnseigne is not empty and allClassesByEnseigne[enseigneAffiliee.id] is defined %}
+											<form action="{{ path('timeline', {'id_enseigne': enseigneAffiliee.id}) }}" method="post">
+												<input type="hidden" name="_token" value="{{ csrf_token('timeline-consulte') }}" required/>
+												<label for="classe" classe="col-md-6">Classes</label>
+												<div class="form-group">
+													<div class="col-md-6">
+														<select class="form-control" name="classe" id="classe" required>
+															{% for item in allClassesByEnseigne[enseigneAffiliee.id] %}
+																<option value="{{ item.id }}">
+																	{{ item.libelle }}
+																</option>
+															{% else %}
+																<option value="">
+																	-- Aucune classe --
+																</option>
+															{%endfor %}
+
+														</select>
+													</div>
+												</div>
+												<div class="form-group mt-md">
+													<input type="submit" value="Consulter" class="btn btn-success">
+												</div>
+											</form>
+										{% else %}
+											<p>
+												Cette enseigne ne possède aucune Classe.
+											</p>
+										{% endif %}
+									</div>
+									<footer class="panel-footer">
+										<div class="row">
+											<div class="col-md-12 text-right">
+												<button class="btn btn-default modal-dismiss">Fermer</button>
+											</div>
+										</div>
+									</footer>
+								</section>
+							</div>
+							{% set isEnseignant = true %}
+						{% elseif 'eleve' in value.profiles or 'parent' in value.profiles %}
+							{% set isEleve = true %}
+							<a href="#modalCenterTimeline-{{ enseigneAffiliee.id }}" class="mb-xs mt-xs mr-xs btn btn-primary modal-basic">
+								<span class="fa fa-calendar"></span>
+								Programme
+							</a>
+							<div id="modalCenterTimeline-{{ enseigneAffiliee.id }}" class="modal-block modal-block-primary mfp-hide">
+								<section class="panel">
+									<header class="panel-heading">
+										<h2 class="panel-title">Choix de la classe</h2>
+									</header>
+									<div class="panel-body">
+										{% if allClassesByEnseigne is not empty and allClassesByEnseigne[enseigneAffiliee.id] is defined %}
+											<form action="{{ path('timeline', {'id_enseigne': enseigneAffiliee.id}) }}" method="post">
+												<input type="hidden" name="_token" value="{{ csrf_token('timeline-consulte') }}" required/>
+												<label for="classe" classe="col-md-6">Classes</label>
+												<div class="form-group">
+
+													<div class="col-md-9">
+														<select class="form-control" name="classe" id="classe" required>
+
+															{% for classe in allClassesByEnseigne[enseigneAffiliee.id] %}
+																<option value="{{ classe.id }}">
+																	{{ classe.libelle }}
+																</option>
+															{% else %}
+																<option value="">
+																	-- Aucune classe --
+																</option>
+															{%endfor %}
+
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<input type="submit" value="Consulter" class="btn btn-success">
+												</div>
+											</form>
+										{% else %}
+											<p>
+												Cette enseigne ne possède aucune Classe.
+											</p>
+										{% endif %}
+									</div>
+									<footer class="panel-footer">
+										<div class="row">
+											<div class="col-md-12 text-right">
+												<button class="btn btn-default modal-dismiss">Fermer</button>
+											</div>
+										</div>
+									</footer>
+								</section>
+							</div>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+
+				{# if coadmin1 == false and isSecretaire == false and isEnseignant == false and isEleve == false %}
+				                    Aucune(s)
+				                {% endif #}
+
+				<a href="{{ path('statistique', {'id_enseigne': enseigneAffiliee.id}) }}" class="mb-xs mt-xs mr-xs btn btn-default">
+					<span class="fa fa-eye"></span>
+					Dashboard
+				</a>
+
+			{% endif %}
+		</td>
+	</tr>
+{% endfor %}

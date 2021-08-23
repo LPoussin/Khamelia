@@ -1,0 +1,38 @@
+<div class="panel">
+    <div class="panel-heading">
+        <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+        </div>
+
+        <p class="panel-title">KhaMELIA <i class="fa fa-angle-right fa-fw"></i> Informations d'inscription
+    </div>
+    <div class="panel-body">
+        <p>Cher patient votre inscription a été bien faites dont voici les détails : </p>
+        <table class="table table-bordered" style="border: 1px solid black; text-align: center;">
+            <thead style="border: 1px solid black; text-align: center;">
+                <tr style="border: 1px solid black; text-align: center;">
+                    <th style="border: 1px solid black; text-align: center;">Noms</th>
+                    <th style="border: 1px solid black; text-align: center;">Prénoms</th>
+                    <th style="border: 1px solid black; text-align: center;">Date</th>
+                    <th style="border: 1px solid black; text-align: center;">Mot de passe</th>
+                    <th style="border: 1px solid black; text-align: center;">Heure</th>
+                    <th style="border: 1px solid black; text-align: center;">Description</th>
+                </tr>
+            </thead>
+            <tbody style="border: 1px solid black; text-align: center;">
+                <tr style="border: 1px solid black; text-align: center;">
+                    <td scope="row" style="border: 1px solid black; text-align: center;">{{ patient.nom }}</td>
+                    <td style="border: 1px solid black; text-align: center;">{{ patient.nom }}</td>
+                    <td style="border: 1px solid black; text-align: center;">{{ patient.nom }} </td>
+                    <td style="border: 1px solid black; text-align: center;">{{ patient.nom }} </td>
+                    <td style="border: 1px solid black; text-align: center;">{{ patient.nom }} à {{ patient.nom }}</td>
+                    <td style="border: 1px solid black; text-align: center;">description</td>
+                </tr>
+            </tbody>
+        </table>
+        <p> <a href="#">Consulter KhaMELIA</a> </p>
+    </div>
+    <div class="panel-footer">
+        <p class="m-none"><small>{{ "now"|date("m/d/Y H:i:m") }}</small></p>
+    </div>
+</div>

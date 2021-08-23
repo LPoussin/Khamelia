@@ -1,0 +1,33 @@
+{% for d in dests %}
+    <div class="panel">
+        <div class="panel-heading">
+          {% if d.message.expediteur.getId()==app.user.id %}
+           <p class="panel-title">You <i class="fa fa-angle-right fa-fw"></i> 
+           {% else %}
+               <p class="panel-title">{{ d.message.expediteur.nom~" "~d.message.expediteur.prenom }}<i class="fa fa-angle-right fa-fw"></i> 
+           {% endif %}
+        </div>
+        <div class="panel-body">
+            <h6>{{ d.message.subject }}</h6>
+            <p>{{ d.message.message|nl2br }}</p>
+            {% if d.message.filetype is not null %}
+               {% if d.message.filetype=="img" %}
+                 <img src="{{d.message.file}}" height="100px" width="100px">
+               {% else %}
+                  {# pdf #}
+                  <embed src="{{d.message.file}}" width="500" height="100" type='application/pdf'/>
+               {% endif %}
+            {% endif %}
+        </div>
+        <div class="panel-footer">
+           <p class="m-none"><small>{% if date(d.message.date)|date('Y/m/d')=="now"|date('Y/m/d') %}
+                        {{ d.message.date|date('H:i:s') }}
+                    {% else %}
+                        {{ d.message.date|date('m/d') }}
+                    {% endif %}</small></p>
+        </div>
+</div>
+{% endfor %}
+<div id="pagination">
+{{knp_pagination_render(dests)}}
+</div>

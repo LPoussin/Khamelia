@@ -1,0 +1,19 @@
+{% for m in messages %}
+<li>
+    <a href="#" class="clearfix">
+            <figure class="image">
+                <img src="{{ asset('assets') }}" alt="{{ m.expediteur.nom }}" class="img-circle" />
+            </figure>
+            <span class="title">{{ m.expediteur.nom~" "~ m.expediteur.prenom   }}</span>
+            <span class="message">
+                {% if m.subject is not empty and m.subject !=" " %}
+                {{ m.subject }}
+                {% elseif m.message is not null %}
+                    {{m.message|slice(0,20)}} ...
+                {% else %}
+                    {{"Fichier"}}
+                {% endif %}
+            </span>
+    </a>
+</li>
+{% endfor %}

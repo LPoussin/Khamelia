@@ -1,0 +1,23 @@
+{% extends 'bal/base.html.twig' %}
+
+{% block content_body %}
+	<div class="inner-body">
+		<h1 class="">
+			Créer un nouveau groupe de discussion
+		</h1>
+		<br><br>
+		<div class="mailbox-compose">
+    		<div class="p-5">
+    			<div class="">
+    				{{ form_start(form) }}
+    					{{ form_row(form.libelle) }}
+    					<br>
+                        <label>Choisir des membres</label>
+                        {{ form_widget(form.members,{"attr":{'class':'select2'}}) }}
+    					<button type="submit" class="btn btn-success">Créer</button>
+    				{{ form_end(form) }}
+    			</div>
+    		</div>
+    	 </div>
+    </div>
+{% endblock %}

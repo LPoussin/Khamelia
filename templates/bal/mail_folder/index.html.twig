@@ -1,0 +1,16 @@
+{% extends 'bal/base.html.twig' %}
+
+{% block content_body %}
+<div class="inner-body">
+<h1>Inbox</h1>
+    <div id="mailbox-email-list" class="mailbox-email-list">
+        <div class="nano">
+            <div class="nano-content">
+                <ul id="" class="list-unstyled">
+                    {% include 'bal/mail_folder/instance.html.twig' %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

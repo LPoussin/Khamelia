@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeEns{% endblock %}
+
+{% block body %}
+    <h1>TypeEns</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_en.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ type_en.code }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ type_en.libelle }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_ens_index') }}">back to list</a>
+
+    <a href="{{ path('type_ens_edit', {'id': type_en.id}) }}">edit</a>
+
+    {{ include('type_ens/_delete_form.html.twig') }}
+{% endblock %}

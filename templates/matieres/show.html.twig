@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spécialité{% endblock %}
+
+{% block body %}
+    <h1>Spécialité</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ matiere.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ matiere.code }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ matiere.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ matiere.slug }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ matiere.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('matieres_index') }}">back to list</a>
+
+    <a href="{{ path('matieres_edit', {'id': matiere.id}) }}">edit</a>
+
+    {{ include('matieres/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,10 @@
+<h1>NET2ALL</h1>
+
+<p>Pour réinitialiser votre mot de passe, visitez ce lien. Nous vous rappelons que votre compte unique NET2ALL est valable pour tous les Services et Communautés et vous permet de vous connecter sur toutes les plateformes NET2ALL</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+</p>
+
+<p>Inetschools</p>

@@ -1,0 +1,710 @@
+<!doctype html>
+<html class="fixed sidebar-left-collapsed">
+	<head>
+
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+		<title>InetSCHOOLS - Boîte aux lettres</title>
+		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
+		<meta name="author" content="okler.net">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome/css/font-awesome.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/vendor/magnific-popup/magnific-popup.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/css/datepicker3.css') }}" />
+
+		<!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote-bs3.css') }}" />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/stylesheets/theme.css') }}" />
+
+		<link rel="stylesheet" href="{{ asset('assets/javascripts/select2/dist/css/select2.min.css') }}" />
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/stylesheets/skins/default.css') }}" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/stylesheets/theme-custom.css') }}">
+
+		<!-- Head Libs -->
+		<script src="{{ asset('assets/vendor/modernizr/modernizr.js') }}"></script>
+
+	</head>
+	<body>
+		<section class="body">
+
+			<!-- start: header -->
+			<header class="header">
+			<div class="logo-container">
+				<a href="../" class="logo">
+					<img src="{{ asset('assets/images/logo.png') }}" height="35" alt="JSOFT Admin" />
+				</a>
+				<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+					<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+				</div>
+			</div>
+		
+			<!-- start: search & user box -->
+			<div class="header-right">
+		
+				<form action="pages-search-results.html" class="search nav-form">
+					<div class="input-group input-search">
+						<input type="text" class="form-control" name="q" id="q" placeholder="Recehrcher...">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+						</span>
+					</div>
+				</form>
+		
+				<span class="separator"></span>
+		
+				<ul class="notifications">
+					<li>
+						<a href="#" title="Cours" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+							<i class="fa fa-book"></i>
+						</a>
+						<div class="dropdown-menu notification-menu">
+							<div class="notification-title">
+								<span class="pull-right label label-default"></span>
+								Cours
+							</div>
+		
+							<div class="content">
+								<ul>
+									{% if app.user is not null %}
+										{% set ens=app.user.getUserJoinedEnseignes() %}
+										{% if ens.isEmpty() ==false %}
+											{% for uj in ens  %}
+												<li>
+  													<a href="{{path('timeline',{id_enseigne:uj.enseigne.id})}}" class="clearfix">
+    													<div class="image">
+            												
+    													</div>
+    													<span class="title">{{ uj.enseigne.nomEnseigne }}</span>
+    													{#<span class="message">{{ n.createdAt|date('d/m H:i') }}</span>#}
+  													</a>
+												</li>
+											{% endfor %}
+										{% endif %}
+									{% endif %}
+									
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="#" title="Evaluations" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+							<i class="fa fa-pencil"></i>
+						</a>
+						<div class="dropdown-menu notification-menu">
+							<div class="notification-title">
+								<span class="pull-right label label-default"></span>
+								Evaluations
+							</div>
+		
+							<div class="content">
+								<ul>
+									{% if app.user is not null %}
+										{% set ens=app.user.getUserJoinedEnseignes() %}
+										{% if ens.isEmpty() ==false %}
+											{% for uj in ens  %}
+												<li>
+  													<a href="{{path('evaluation_timeline',{id_enseigne:uj.enseigne.id})}}" class="clearfix">
+    													<div class="image">
+            												
+    													</div>
+    													<span class="title">{{ uj.enseigne.nomEnseigne }}</span>
+    													{#<span class="message">{{ n.createdAt|date('d/m H:i') }}</span>#}
+  													</a>
+												</li>
+											{% endfor %}
+										{% endif %}
+									{% endif %}
+									
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="{{"#"}}" title="Points" class="notification-icon">
+							<i class="fa fa-angle-double-down"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+							<i class="fa fa-envelope"></i>
+							<span class="badge">{{render(path('bal_unred_number'))}}</span>
+						</a>
+		
+						<div class="dropdown-menu notification-menu">
+							<div class="notification-title">
+								<span class="pull-right label label-default">{{render(path('bal_unred_number'))}}</span>
+								Messagerie
+							</div>
+		
+							<div class="content">
+								<ul>
+									{% if app.user is not null %}
+										{{render(path('bal_unred',{page:1,limit:4}))}}
+									{% endif %}
+									
+								</ul>
+		
+								<hr />
+		
+								<div class="text-right">
+									<a href="{{path('bal')}}" class="view-more">Tout voir</a>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+							<i class="fa fa-bell"></i>
+							{% set n_num= render(path('notification_non_vu_num')) %}
+							<span class="badge">{{n_num}}</span>
+						</a>
+		
+						<div class="dropdown-menu notification-menu">
+							<div class="notification-title">
+								<span class="pull-right label label-default">{{n_num}}</span>
+								Alerts
+							</div>
+		
+							<div class="content">
+								<ul>									
+									{% if app.user is not null %}
+										{{render(path('notification_liste',{type:"nonvu",page:1,limit:4}))}}
+									{% endif %}
+								</ul>
+		
+								<hr />
+		
+								<div class="text-right">
+									<a href="{{path('notification')}}" class="view-more">Tout voir</a>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+		
+				<span class="separator"></span>
+		
+				<div id="userbox" class="userbox">
+					<a href="#" data-toggle="dropdown">
+						<figure class="profile-picture">
+							<img src="assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg" />
+						</figure>
+						{% if app.user != null %}
+							<div class="profile-info" data-lock-name="{{ app.user.nom }} {{ app.user.prenom }}" data-lock-email="{{ app.user.email }}">
+								<span class="name">{{ app.user.nom }} {{ app.user.prenom }}</span>
+								{% if app.user.type == TYPE_PARTICULIER %}
+									<span class="role">Particulier</span>
+								{% elseif app.user.type == TYPE_ENTREPRISE %}
+									<span class="role">Entreprise</span>
+								{% endif %}
+							</div>
+						{% endif %}
+						
+						<i class="fa custom-caret"></i>
+					</a>
+		
+					<div class="dropdown-menu">
+						<ul class="list-unstyled">
+							<li class="divider"></li>
+							<li>
+								<a role="menuitem" tabindex="-1" href="{{ path('my_profile') }}"><i class="fa fa-user"></i> Mon profile</a>
+							</li>
+							<li>
+								<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
+							</li>
+							<li>
+								<a role="menuitem" tabindex="-1" href="{{ path('app_logout') }}"><i class="fa fa-power-off"></i> Déconnexion</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- end: search & user box -->
+		</header>
+			<!-- end: header -->
+
+			<div class="inner-wrapper">
+				<!-- start: sidebar -->
+				<aside id="sidebar-left" class="sidebar-left">
+				
+					<div class="sidebar-header">
+						<div class="sidebar-title">
+							Navigation
+						</div>
+						<div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+							<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+						</div>
+					</div>
+				
+					<div class="nano">
+						<div class="nano-content">
+							<nav id="menu" class="nav-main" role="navigation">
+								<ul class="nav nav-main">
+								<li class="">
+									<a href="{{ path('dashboard') }}">
+										<i class="fa fa-home" aria-hidden="true"></i>
+										<span>Dashboard</span>
+									</a>
+								</li>
+								<li {% if position is defined and position == 'Enseigne' %}class="nav-active"{% endif %} >
+									<a href="{{ path('enseigne') }} "> 
+										{#<span class="pull-right label label-primary">182</span>#}
+										<i class="fa fa-institution" aria-hidden="true"></i>
+										<span>Enseigne</span>
+									</a>
+								</li>
+								
+								<li class="">
+									<a href="{{ path('services_index') }}">
+										<i class="fa fa-university" aria-hidden="true"></i>
+										<span>Services</span>
+									</a>
+								</li>
+								{% if "SUPER_ADMIN" in app.user.roles %}
+									<li class="nav-active">
+										<a href="{{ path('type_ens_index') }}">
+											<i class="fa fa-book" aria-hidden="true"></i>
+											<span>Type enseigne</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('niveaux_etudes_index') }}">
+											<i class="fa fa-edit" aria-hidden="true"></i>
+											<span>Niveaux d'Étude</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('series_index') }}">
+											<i class="fa fa-mortar-board" aria-hidden="true"></i>
+											<span>Séries</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('matieres_index') }}">
+											<i class="fa fa-file" aria-hidden="true"></i>
+											<span>Matières</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('categorie_eval_index') }}">
+											<i class="fa fa-file" aria-hidden="true"></i>
+											<span>Catégories Evaluations</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('type_eval_index') }}">
+											<i class="fa fa-file" aria-hidden="true"></i>
+											<span>Type d'Evaluation</span>
+										</a>
+									</li>
+								{% endif %}
+								
+							
+								<li>
+									<a href="{{ path('bal') }}">
+										<span class="pull-right label label-primary"></span>
+										<i class="fa fa-envelope" aria-hidden="true"></i>
+										<span>Mailbox</span>
+									</a>
+								</li>								
+							</ul>
+							</nav>
+				
+							<hr class="separator" />
+				
+							{#<div class="sidebar-widget widget-tasks">
+								<div class="widget-header">
+									<h6>Projects</h6>
+									<div class="widget-toggle">+</div>
+								</div>
+								<div class="widget-content">
+									<ul class="list-unstyled m-none">
+										<li><a href="#">Porto HTML5 Template</a></li>
+										<li><a href="#">Tucson Template</a></li>
+										<li><a href="#">Porto Admin</a></li>
+									</ul>
+								</div>
+							</div>
+				
+							<hr class="separator" />
+				
+							<div class="sidebar-widget widget-stats">
+								<div class="widget-header">
+									<h6>Company Stats</h6>
+									<div class="widget-toggle">+</div>
+								</div>
+								<div class="widget-content">
+									<ul>
+										<li>
+											<span class="stats-title">Stat 1</span>
+											<span class="stats-complete">85%</span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-primary progress-without-number" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%;">
+													<span class="sr-only">85% Complete</span>
+												</div>
+											</div>
+										</li>
+										<li>
+											<span class="stats-title">Stat 2</span>
+											<span class="stats-complete">70%</span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-primary progress-without-number" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
+													<span class="sr-only">70% Complete</span>
+												</div>
+											</div>
+										</li>
+										<li>
+											<span class="stats-title">Stat 3</span>
+											<span class="stats-complete">2%</span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-primary progress-without-number" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">
+													<span class="sr-only">2% Complete</span>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>#}
+						</div>
+					
+					</div>
+				
+				</aside>
+				<!-- end: sidebar -->
+				
+
+				<section role="main" class="content-body">
+					<header class="page-header">
+						<h2>E-Mail</h2>
+					
+						<div class="right-wrapper pull-right pr-md">
+							<ol class="breadcrumbs">
+								<li>
+									<a href="{{path('dashboard')}}">
+										<i class="fa fa-home"></i>
+									</a>
+								</li>
+								<li><span>Mailbox</span></li>
+								{#<li><a href="mailbox-folder.html">Inbox</a></li>
+								<li><span>E-Mail</span></li>#}
+							</ol>
+					
+							{#<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>#}
+						</div>
+					</header>
+
+					<!-- start: page -->
+					<section class="content-with-menu mailbox">
+						<div class="content-with-menu-container" data-mailbox data-mailbox-view="email">
+							<div class="inner-menu-toggle">
+								<a href="#" class="inner-menu-expand" data-open="inner-menu">
+									Menu <i class="fa fa-chevron-right"></i>
+								</a>
+							</div>
+							
+							<menu id="content-menu" class="inner-menu" role="menu">
+								<div class="nano">
+									<div class="nano-content">
+							
+										<div class="inner-menu-toggle-inside">
+											<a href="#" class="inner-menu-collapse">
+												<i class="fa fa-chevron-up visible-xs-inline"></i><i class="fa fa-chevron-left hidden-xs-inline"></i> Hide Menu
+											</a>
+							
+											<a href="#" class="inner-menu-expand" data-open="inner-menu">
+												Menu <i class="fa fa-chevron-down"></i>
+											</a>
+										</div>
+							
+										<div class="inner-menu-content">
+											<a href="{{path('bal_new')}}" class="btn btn-block btn-primary btn-md pt-sm pb-sm text-md">
+												<i class="fa fa-envelope mr-xs"></i>
+												Compose
+											</a>
+							
+											<ul class="list-unstyled mt-xl pt-md">
+												<li>
+													<a href="{{path('bal')}}" class="menu-item active">Inbox <span class="label label-primary text-normal pull-right">{{render(path('bal_unred_number'))}}</span></a>
+												</li>
+												<li>
+													<a href="{{path('bal_new_groupe')}}" class="menu-item">Créer un groupe</a>
+												</li>
+												<li>
+													<a href="{{path('bal_groupe')}}" class="menu-item">Groupes</a>
+												</li>
+											</ul>
+							
+											<hr class="separator" />
+											{#
+											<div class="sidebar-widget m-none">
+												<div class="widget-header">
+													<h6 class="title">Labels</h6>
+													<span class="widget-toggle">+</span>
+												</div>
+												<div class="widget-content">
+													<ul class="list-unstyled mailbox-bullets">
+														<li>
+															<a href="#" class="menu-item">Dribbble <span class="ball pink"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">Envato <span class="ball green"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">Facebook <span class="ball blue"></span></a>
+														</li>
+													</ul>
+												</div>
+											</div>
+							
+											<hr class="separator" />
+							
+											<div class="sidebar-widget m-none">
+												<div class="widget-header">
+													<h6 class="title">Chat</h6>
+													<span class="widget-toggle">+</span>
+												</div>
+												<div class="widget-content">
+													<ul class="list-unstyled mailbox-bullets">
+														<li>
+															<a href="#" class="menu-item">Amy Doe <span class="ball green"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">Joey Doe <span class="ball green"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">Robert Doe <span class="ball orange"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">John Doe <span class="ball red"></span></a>
+														</li>
+														<li>
+															<a href="#" class="menu-item">Uncle Doe <span class="ball red"></span></a>
+														</li>
+														<li class="text-center mt-sm">
+															<em><a href="#">show offline</a></em>
+														</li>
+													</ul>
+												</div>
+											</div>#}
+										</div>
+									</div>
+								</div>
+							</menu>
+
+							{% block content_body %}
+
+							<div class="inner-body mailbox-email">
+								<div class="mailbox-email-header mb-lg">
+									<h3 class="mailbox-email-subject m-none text-light">
+										Released Porto Admin! (3)
+									</h3>
+							
+									<p class="mt-lg mb-none text-md">From <a href="#">Okler Themes</a> to <a href="#">You</a>, started on July, 05, 2014</p>
+								</div>
+								<div class="mailbox-email-container">
+									<div class="mailbox-email-screen">
+										<div class="panel">
+											<div class="panel-heading">
+												<div class="panel-actions">
+													<a href="#" class="fa fa-caret-down"></a>
+													<a href="#" class="fa fa-mail-reply"></a>
+													<a href="#" class="fa fa-mail-reply-all"></a>
+													<a href="#" class="fa fa-star-o"></a>
+												</div>
+							
+												<p class="panel-title">Okler Themes <i class="fa fa-angle-right fa-fw"></i> You</p>
+											</div>
+											<div class="panel-body">
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+							
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+											</div>
+											<div class="panel-footer">
+												<p class="m-none"><small>July 07, 2014. 9:51pm</small></p>
+											</div>
+										</div>
+							
+										<div class="panel">
+											<div class="panel-heading">
+												<div class="panel-actions">
+													<a href="#" class="fa fa-caret-down"></a>
+													<a href="#" class="fa fa-mail-reply"></a>
+													<a href="#" class="fa fa-mail-reply-all"></a>
+													<a href="#" class="fa fa-star-o"></a>
+												</div>
+							
+												<p class="panel-title">You <i class="fa fa-angle-right fa-fw"></i> Okler Themes
+											</div>
+											<div class="panel-body">
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+							
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+											</div>
+											<div class="panel-footer">
+												<p class="m-none"><small>July 06, 2014. 03:26pm</small></p>
+											</div>
+										</div>
+							
+										<div class="panel">
+											<div class="panel-heading">
+												<div class="panel-actions">
+													<a href="#" class="fa fa-caret-down"></a>
+													<a href="#" class="fa fa-mail-reply"></a>
+													<a href="#" class="fa fa-mail-reply-all"></a>
+													<a href="#" class="fa fa-star-o"></a>
+												</div>
+							
+												<p class="panel-title">Okler Themes <i class="fa fa-angle-right fa-fw"></i> You
+											</div>
+											<div class="panel-body">
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+							
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat nulla et sollicitudin volutpat. Suspendisse consequat massa et varius tincidunt. In quis velit et enim posuere consectetur at et erat. Praesent condimentum ipsum non ligula tempor cursus. Maecenas ornare vitae nibh blandit suscipit. Nulla suscipit mollis dui vitae porttitor. Nulla faucibus neque leo. Sed tincidunt enim sit amet tellus bibendum consectetur. Nunc lobortis metus posuere adipiscing auctor. Duis ante ipsum, malesuada eu risus vitae, mattis dapibus arcu. Nullam metus dui, fermentum dictum nulla id, gravida dignissim eros.</p>
+											</div>
+											<div class="panel-footer">
+												<p class="m-none"><small>July 05, 2014. 10:03am</small></p>
+											</div>
+										</div>
+									</div>
+							
+									<div class="compose">
+										<div id="compose-field" class="compose">
+										</div>
+										<div class="text-right mt-md">
+											<a href="#" class="btn btn-primary">
+												<i class="fa fa-send mr-xs"></i>
+												Send
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{% endblock %}
+
+						</div>
+					</section>
+					<!-- end: page -->
+				</section>
+				{% block content_out %}
+				{% endblock %}
+			</div>
+			{#
+			<aside id="sidebar-right" class="sidebar-right">
+				<div class="nano">
+					<div class="nano-content">
+						<a href="#" class="mobile-close visible-xs">
+							Collapse <i class="fa fa-chevron-right"></i>
+						</a>
+			
+						<div class="sidebar-right-wrapper">
+			
+							<div class="sidebar-widget widget-calendar">
+								<h6>Upcoming Tasks</h6>
+								<div data-plugin-datepicker data-plugin-skin="dark" ></div>
+			
+								<ul>
+									<li>
+										<time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
+										<span>Company Meeting</span>
+									</li>
+								</ul>
+							</div>
+			
+							<div class="sidebar-widget widget-friends">
+								<h6>Friends</h6>
+								<ul>
+									<li class="status-online">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-online">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-offline">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-offline">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+			
+						</div>
+					</div>
+				</div>
+			</aside>
+			#}
+		</section>
+
+		<!-- Vendor -->
+		<script src="{{ asset('assets/vendor/jquery/jquery.js') }}"></script>
+		<script src="{{ asset('assets/javascripts/select2/dist/js/select2.full.min.js') }}"></script>
+		<script type="text/javascript">
+		   jQuery(function($){
+		   	$('.select2').select2();
+		   });
+			
+		</script>
+		<script src="{{ asset('assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
+		<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.js') }}"></script>
+		<script src="{{ asset('assets/vendor/nanoscroller/nanoscroller.js') }}"></script>
+		<script src="{{ asset('assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+		<script src="{{ asset('assets/vendor/magnific-popup/magnific-popup.js') }}"></script>
+		<script src="{{ asset('assets/vendor/jquery-placeholder/jquery.placeholder.js') }}"></script>
+		
+		<!-- Specific Page Vendor -->
+		<script src="{{ asset('assets/vendor/summernote/summernote.js') }}"></script>
+		
+		<!-- Theme Base, Components and Settings -->
+		<script src="{{ asset('assets/javascripts/theme.js') }}"></script>
+		
+		<!-- Theme Custom -->
+		<script src="{{ asset('assets/javascripts/theme.custom.js') }}"></script>
+		
+		<!-- Theme Initialization Files -->
+		<script src="{{ asset('assets/javascripts/theme.init.js') }}"></script>
+
+
+
+	</body>
+</html>

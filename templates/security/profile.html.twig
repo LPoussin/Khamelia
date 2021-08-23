@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Profile{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+{% endblock %}
+
+{% block position %}
+    Profile
+{% endblock %}
+
+{% block chemin %}
+    Profile
+{% endblock %}
+
+{% block body %}
+     <div class="row">
+                        <div class="col-md-4">
+
+                            <section class="panel">
+                                <div class="panel-body">
+                                    <div class="thumb-info mb-md">
+                                        <img src="{{asset('assets/images/!logged-user.jpg')}}" class="rounded img-responsive" alt="John Doe">
+                                        <div class="thumb-info-title">
+                                            <span class="thumb-info-inner">{{user.nom~" "~user.prenom}}</span>
+                                            <span class="thumb-info-type">
+                                                    {% if app.user.type == TYPE_PARTICULIER %}
+                                                        PAR.
+                                                     {% elseif app.user.type == TYPE_ENTREPRISE %}
+                                                        ENT.
+                                                    {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!--div class="widget-toggle-expand mb-md">
+                                        <div class="widget-header">
+                                            <h6>Profile Completion</h6>
+                                            <div class="widget-toggle">+</div>
+                                        </div>
+                                        <div class="widget-content-collapsed">
+                                            <div class="progress progress-xs light">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                    60%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-expanded">
+                                            <ul class="simple-todo-list">
+                                                <li class="completed">Update Profile Picture</li>
+                                                <li class="completed">Change Personal Information</li>
+                                                <li>Update Social Media</li>
+                                                <li>Follow Someone</li>
+                                            </ul>
+                                        </div>
+                                    </div-->
+
+                                    <hr class="dotted short">
+
+                                    <h6 class="text-muted">Vous</h6>
+                                    <p>...</p>
+
+                                    <hr class="dotted short">
+
+                                    {#<div class="social-icons-list">
+                                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+                                        <a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+                                    </div>#}
+
+                                </div>
+                            </section>
+
+                        </div>
+                        <div class="col-md-8">
+                            {% if user.userJoinedEnseignes.isEmpty() %}
+                      {% set idNumber = '' %}
+                    {% else %}
+                        {% set idNumber = user.userJoinedEnseignes[0].identificationNumber %}
+                    {% endif %}
+                            <div class="tabs">
+                                <ul class="nav nav-tabs tabs-primary">
+                                    <li class="active">
+                                        <a href="#overview" data-toggle="tab">Infos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#edit" data-toggle="tab">Mot de passe</a>
+                                    </li>
+									<li>
+                                        <a href="#identification" data-toggle="tab">Identification</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="overview" class="tab-pane active">
+                                        <h4 class="mb-md">Vos informations</h4>
+
+                                        <section class=" mb-xlg">
+                                            <div> <strong>Nom :</strong>  {{user.nom}}</div>
+                                            <br>
+                                            <div><strong>Prénom(s) :</strong>  {{user.prenom}}</div>
+                                             <br>
+                                            <div><strong>E-mail :</strong>  {{user.email}}</div>                                            									<br>
+											<div><a href="#" class="btn btn-success">Modifier vos informations</a></div> 
+                                        </section>
+                                    </div>
+                                    <div id="edit" class="tab-pane">
+                                        <form action="{{ path('my_profile') }}" method="POST">
+                                            <h4 class="mb-xlg">Modifier votre mot de passe</h4>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="hold_mot_passe">Ancien mot de passe</label>
+                        <div class="col-md-6">
+                            <input type="password" name="hold_mot_passe" id="hold_mot_passe" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="mot_passe">Mot de passe </label>
+                        <div class="col-md-6">
+                            <input type="password" name="mot_passe" id="mot_passe" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="conf_mot_passe">Confirmer le mot de passe</label>
+                        <div class="col-md-6">
+                            <input type="password" name="conf_mot_passe" id="conf_mot_passe" class="form-control" required/>
+                        </div>
+                    </div>
+                   
+                    <input type="hidden" value="{{ csrf_token('update-profile') }}" name="_token">
+                    <input type="submit" value="Mettre à jour" class="mb-xs mt-xs mr-xs btn btn-success">
+                </form>
+
+                                    </div>
+									<div id="identification" class="tab-pane">
+                                        <h4 class="mb-md">Identification</h4>
+
+                                        <section class=" mb-xlg">
+                                            <div><strong>Code d'identification :</strong>  {{idNumber}}</div>
+                                            {% if idNumber!= '' %}
+                                                <br>
+                                                <div><strong>Code QR :</strong>  
+                                                    <div><img src="{{ qr_code_path('inetschools.web-evolution.online/panel/public') }}" />
+                                                {#<img src="{{ qr_code_url('1000_AA-00', { writer: 'eps' }) }}" /> #}
+                                                {#<img src="{{ qr_code_data_uri(idNumber, { writer: 'svg', size: 150 }) }}" /> #}</div>
+                                                </div>
+                                            {% endif %}
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+
+                    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}
+

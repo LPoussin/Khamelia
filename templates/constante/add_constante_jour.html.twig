@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KhaMELIA - Constante Jour/nouveau
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} "/>
+	<link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} "/>
+{% endblock %}
+
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-6 col-lg-12 col-xl-6">
+			<section class="panel">
+				<header class="panel-heading">
+					<div class="panel-actions">
+						<a href="#" class="">
+							<button class="mb-xs mt-xs mr-xs btn btn-primary">
+								<span class="fa fa-left"></span>
+								Retour
+							</button>
+						</a>
+					</div>
+					<h2 class="panel-title">
+						Créer une constante jour
+					</h2>
+				</header>
+				<div class="panel-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="inputState">State</label>
+							<select name="constante" id="constante"  class="form-control">
+								{% for constante in allconstantes %}
+									<option value="{{ constante.id }}">
+										{{ constante.libelle }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+						<input type="hidden" name="_token" value="{{ csrf_token('addConstanteJour') }}"/>
+						<div class="form-group">
+							<label for="inputAddress2">Intitulé jour</label>
+							<input type="text" name="libelle_jour" class="form-control" id="libelle_jour" placeholder="" required>
+						</div>
+						<div class="form-group text-right pr-md">
+							<input type="submit" value="Ajouter" class="btn btn-primary">
+						</div>
+					</form>
+
+				</div>
+			</section>
+		</div>
+
+	{% endblock %}

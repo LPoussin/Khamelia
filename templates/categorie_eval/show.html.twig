@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CategorieEval{% endblock %}
+
+{% block body %}
+    <h1>CategorieEval</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ categorie_eval.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ categorie_eval.code }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ categorie_eval.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ categorie_eval.slug }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ categorie_eval.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('categorie_eval_index') }}">back to list</a>
+
+    <a href="{{ path('categorie_eval_edit', {'id': categorie_eval.id}) }}">edit</a>
+
+    {{ include('categorie_eval/_delete_form.html.twig') }}
+{% endblock %}

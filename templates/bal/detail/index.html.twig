@@ -1,0 +1,61 @@
+{% extends 'bal/base.html.twig' %}
+
+{% block content_body %}
+
+	<div class="inner-body mailbox-email">
+		<div class="mailbox-email-header mb-lg">
+									<h3 class="mailbox-email-subject m-none text-light">
+										Inetschools
+									</h3>
+							{% if type=="user" %}
+									<p class="mt-lg mb-none text-md"><a href="#">{{user.user.nom}}</a> et <a href="#">Vous</a></p>
+							{% else %}
+								<p class="mt-lg mb-none text-md"><a href="{{path('bal_groupe_detail',{id:groupe.id})}}">{{groupe.libelle}}</a></p>
+						  {% endif %}
+								</div>
+		<div class="mailbox-email-container">
+			<div class="mailbox-email-screen">
+		{% if type=="user" %}
+			<h4>Discussion avec <a href="#">{{user.user.nom}}</a>
+		</h4>
+			{% include 'bal/detail/display_message_user.html.twig' %}
+		{% else %}
+			<h4>Discussion dans <a href="#">{{groupe.libelle}}</a>
+		</h4>
+			{% include 'bal/detail/display_message_groupe.html.twig' %}
+		{% endif %}
+</div></div>
+<br><br>
+		<div class="mailbox-compose bg-white">
+
+        	{{ form_start(form,{'attr':{'class':'form-horizontal form-bordered form-bordered'}}) }}
+                   
+                    {% do form.subject.setRendered() %}
+                    {% do form.destinataires.setRendered() %}
+                    {% do form.destinatairegroupes.setRendered() %}
+                 
+                    <div class="form-group">
+                            <div class="compose">
+                            	{{form_widget(form.message,{'attr':{'class':'form-control-invisible compose-control','id':'compose-field','placeholder':'Contenu text'}})}}
+                            </div>
+                    </div>
+
+                    <div class="form-group">
+                            <div class="compose">
+                            	{{form_widget(form.f,{'attr':{'class':'form-control-invisible compose-control'}})}}
+                            </div>
+                    </div>
+                    {{form_errors(form)}}
+                    <div class="form-group compose">
+                        <button type="submit" class="btn btn-success">{{"Envoyer"}}</button>
+                    </div>
+                    {{form_row(form._token)}}
+                </form>
+            {{ form_end(form) }}
+
+        </div>
+
+	</div>
+		</div>
+
+{% endblock %}

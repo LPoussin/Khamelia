@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InetSCHOOLS - Timeline{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatables-bs3/assets/css/datatables.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/pnotify/pnotify.custom.css') }} " />
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }} " />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css" media="print') }} " />
+{% endblock %}
+{% block position %}
+	{{ position }}
+{% endblock %}
+
+{% block chemin %}
+	{{ chemin }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+    <div class="col-md-6 col-lg-12 col-xl-6">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    {% if userAvis == false and 'enseignant' not in joinedUserProfile.profiles and 'parent' not in joinedUserProfile.profiles %}
+                        <a href="{{ path('avis_cours', {'cours': cours.id}) }}" class="">
+                            <button class="mb-xs mt-xs mr-xs btn btn-success">
+                                Donner votre avis
+                            </button>
+                        </a>
+                    {% endif %}
+                    <a href="{{ path('enseigne') }}" class="">
+                        <button class="mb-xs mt-xs mr-xs btn btn-primary">
+                            Retour
+                        </button>
+                    </a
+                    <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">
+                    Les avis
+                </h2>
+            </header>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped mb-none" {% if allAvis is not empty %} id="datatable-default" {% endif %}>
+                    <thead>
+                        <tr>
+                            <th>Auteur</th>
+							<th>Cours-Libellé</th>
+                            <th>Cours compris</th>
+                            <th>Cours bien expliquer</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in allAvis %}
+                            <tr>
+                                <td>{{ item.eleve.nom }} {{ item.eleve.prenom }}</td>
+								<td>{{ item.cours.libelle }}</td>
+                                <td>
+                                    {% if item.coursCompris == 'oui' %}
+                                        Oui
+                                    {% elseif item.coursCompris == 'non' %}
+                                        Non
+                                    {% elseif item.coursCompris == 'pas_vraiment' %}
+                                        Pas vraiment
+                                    {% elseif item.coursCompris == 'sans_avis' %}
+                                        Sans avis
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.bienExplique == 'oui' %}
+                                        Oui
+                                    {% elseif item.bienExplique == 'non' %}
+                                        Non
+                                    {% elseif item.bienExplique == 'pas_vraiment' %}
+                                        Pas vraiment
+                                    {% elseif item.bienExplique == 'sans_avis' %}
+                                        Sans avis
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if content is not empty and content[item.id] is defined and content[item.id] is not empty and 
+                                        'parent' in joinedUserProfile.profiles and content[item.id].0.idEleve.id == item.eleve.id %}
+
+                                        {% if item.isValide == false %}
+                                            <a href="{{ path('valider_avis', {'avis': item.id}) }}" class="mb-xs mt-xs mr-xs btn btn-primary">
+                                                <span class="fa fa-check-circle-o"></span>
+                                                Valider
+                                            </a>
+                                        {% else %}
+                                            Déjà valider
+                                        {% endif %}
+                                    {% endif %}
+                                    {# if userAvis == true %}
+                                         <a href="" class="mb-xs mt-xs mr-xs btn btn-primary">
+                                            <span class="fa fa-edit"></span>
+                                            Modifier
+                                        </a>
+                                    {% endif #}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/select2/select2.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/media/js/jquery.dataTables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/jquery-datatables-bs3/assets/js/datatables.js') }} "></script>
+    <script src="{{ asset('assets/vendor/pnotify/pnotify.custom.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/ui-elements/examples.modals.js') }}"></script>
+    <script src="{{ asset('assets/javascripts/tables/examples.datatables.default.js') }}"></script>
+{% endblock %}
